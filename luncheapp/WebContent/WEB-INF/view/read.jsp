@@ -10,7 +10,7 @@ List<Lunch> list=(List<Lunch>)request.getAttribute("list");
 <title>Insert title here</title>
 </head>
 <body>
-<a href="/lunchapp/Create">新規追加</a>
+<a href="/luncheapp/Create">新規追加</a>
 <%if(list !=null && list.size()>0){ %>
 <table border="1">
 <tr><th>id</th><th>name</th><th>menu</th><th></th></tr>
@@ -20,8 +20,8 @@ List<Lunch> list=(List<Lunch>)request.getAttribute("list");
 <td><%=lunch.getName() %></td>
 <td><%=lunch.getMenu() %></td>
 <td>
-<a href="/lunchapp/Update?id=<%=lunch.getId() %>">更新</a>
-<a href="/lunchapp/Delete?id=<%=lunch.getId() %>" onclick="return confirm('id=<%=lunch.getId()%>を削除してよろしいですか？');">削除</a>
+<a href="/luncheapp/Update?id=<%=lunch.getId() %>">更新</a>
+<a href="/luncheapp/Delete?id=<%=lunch.getId() %>" onclick="return confirm('id=<%=lunch.getId()%>を削除してよろしいですか？');">削除</a>
 </td>
 </tr>
 <%} %>

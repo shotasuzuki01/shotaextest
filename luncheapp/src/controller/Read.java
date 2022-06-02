@@ -19,10 +19,11 @@ public class Read extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LunchDAO dao=new LunchDAO();
-		List<Lunch> list=dao.findAll();
+		List<Lunch>list=dao.findAll();
 		request.setAttribute("list", list);
+
 		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/read.jsp");
-		rd.forward(request, response);
+		rd.forward(request,response);
 	}
 
 }
