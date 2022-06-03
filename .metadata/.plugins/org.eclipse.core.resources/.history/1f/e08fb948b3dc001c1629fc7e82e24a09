@@ -1,8 +1,0 @@
-@charset "UTF-8";
-.container{
-	background:pink;
-}
-#boxA{
-	width:313px;
-	margin-right:20px;
-}

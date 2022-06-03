@@ -19,13 +19,12 @@ public class PersonDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 
-	private void connect() throws NamingException, SQLException {
-	Context context =new InitialContext();
-	DataSource ds=(DataSource)context.lookup("java:comp/env/jdbc/jsp");
-	this.db=ds.getConnection();
-}
-
-private void disconnect() {
+	private void connect() throws SQLException, NamingException {
+		Context context=new InitialContext();
+		DataSource ds=(DataSource)context.lookup("java:comp/env/jdbc/jsp");
+		this.db= ds.getConnection();
+	}
+	private void disconnect() {
 	try {
 		if(rs !=null) {
 			rs.close();
@@ -39,44 +38,95 @@ private void disconnect() {
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
-}
-public List<Person> findAll(){
-	List<Person> list=new ArrayList<>();
-	try {
-		this.connect();
-		ps=db.prepareStatement("SELECT * FROM persons");
-		rs=ps.executeQuery();
-		while(rs.next()) {
-			int id=rs.getInt("id");
-			String name=rs.getString("name");
-			int age=rs.getInt("age");
-			Person person=new Person(id,name,age);
-			list.add(person);
+	}
+	public List<Person> findAll(){
+		List<Person> list= new ArrayList<Person>();
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT * FROM persons");
+			rs=ps.executeQuery();
+			while(rs.next()) {
+				int id=rs.getInt("id");
+				String name=rs.getString("name");
+				int age=rs.getInt("age");
+				Person person=new Person(id,name,age);
+				list.add(person);
+			}
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		} catch (NamingException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}finally {
+		this.disconnect();
 		}
-	} catch (NamingException | SQLException e) {
-		e.printStackTrace();
-	}finally {
-		this.disconnect();
+		return list;
 	}
-	return list;
-}
-public Person findOne(int id) {
-	Person person=null;
-	try {
-		this.connect();
-	ps=db.prepareStatement("SELECT * FROM persons WHERE id=?");
-	ps.setInt(1, id);
-	rs=ps.executeQuery();
-	if(rs.next()) {
-		String name=rs.getString("name");
-		int age=rs.getInt("age");
-		person=new Person(id,name,age);
+	public void insertOne(Person person) {
+		try {
+			this.connect();
+			ps=db.prepareStatement("Insert INTO persons(name,age) VALUES(?,?)");
+			ps.setString(1,person.getName());
+			ps.setInt(2,person.getAge());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
 	}
-	} catch (NamingException | SQLException e) {
-		e.printStackTrace();
-	}finally {
-		this.disconnect();
+	public Person findOne(int id) {
+		Person person=null;
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT * FROM persons WHERE id=?");
+			ps.setInt(1, id);
+			rs=ps.executeQuery();
+			if(rs.next()) {
+				String name=rs.getString("name");
+				int age=rs.getInt("age");
+				person=new Person(id,name,age);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+		return person;
 	}
-	return person;
-}
+	public void updateOne(Person person) {
+		try {
+			this.connect();
+			ps=db.prepareStatement("UPDATE persons SET name=?,age=? WHERE id=?");
+			ps.setString(1, person.getName());
+			ps.setInt(2, person.getAge());
+			ps.setInt(3,person.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+	}
+	public void deleteOne(int id) {
+		try {
+			this.connect();
+			ps=db.prepareStatement("DELETE FROM persons WHERE id=?");
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+	}
 }

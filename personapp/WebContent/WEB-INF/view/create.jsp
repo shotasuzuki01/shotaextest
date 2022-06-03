@@ -8,7 +8,7 @@
 </head>
 <body>
 <form action="/personapp/Create" method="post">
-なまえ:<input type="text" name="name"><br>
+名前:<input type="text" name="name"><br>
 年齢:<input type="text" name="age"><br>
 <button type="submit">追加</button>
 </form>

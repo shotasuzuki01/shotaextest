@@ -1,7 +1,0 @@
-@charset "UTF-8";
-.container{
-	display:flex;
-	background:pink;
-	width:30%;
-	justify-content:center;
-}
